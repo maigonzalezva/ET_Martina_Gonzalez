@@ -71,4 +71,12 @@ while True:
         categoria = input("Ingrese el nombre de la categoria (polera, pantalon, chaqueta, vestido, poleron, camisa): ")
         unidades_categoria(categoria, prendas, bodega)
 
+    elif opcion == 2:
+        p_min = (input("Ingrese precio minimo"))
+        p_max = (input("Ingrese precio maximo"))
+        if p_min >= 0 or p_min < p_max:
+            busqueda_precio(p_min, p_max, prendas, bodega)
+        else: 
+            print("ingrese un numero mayor que 0 o menor al maximo")
+
 
