@@ -57,11 +57,85 @@ def busqueda_precio(p_min, p_max, prendas, bodega):
     for codigo, datos in bodega.items():
         if datos[0] >= p_min and datos[0] <= p_max and datos[1] != 0:
             resultado.append(f"{prendas[codigo][0]}--{codigo}")
-    resultado.sorf
+    resultado.sort()
     if len(resultado) == 0:
         print("No existen prendas con ese rango de precio")
     else: 
         print(f"Los resultados son: {resultado}")
+
+def buscar_codigo(codigo, bodega):
+    if codigo.upper() in bodega:
+        return True
+    return False
+
+def actualizar_precio(codigo, nuevo_precio, bodega):
+    if buscar_codigo(codigo, bodega):
+        bodega[codigo.upper()][0] = nuevo_precio
+        return True 
+    return False
+
+def valida_codigo(codigo, bodega):
+    if codigo.strip() == "":
+        return False
+    if buscar_codigo(codigo, bodega):
+        return False
+    return True
+
+def valida_nombre(nombre):
+    if nombre.strip() == "":
+        return False
+    return True
+
+def valida_categoria(categoria):
+    if categoria.strip() == "":
+        return False
+    return True
+
+def valida_talla(talla):
+    if talla.strip() == "":
+        return False
+    return True
+
+def valida_color(color):
+    if color.strip() == "":
+        return False
+    return True
+
+def valida_material(material):
+    if material.strip() == "":
+        return False
+    return True
+
+def valida_es_unisex(es_unisex):
+    if es_unisex == "s":
+        return True
+    return False
+
+def valida_precio(precio):
+    if precio > 0:
+        return True
+    return False
+
+def valida_unidades(unidades):
+    if unidades >= 0:
+        return True
+    return False
+
+def agregar_prenda(codigo, nombre, categoria, talla, color, material, es_unisex, precio, unidades, bodega):
+    if buscar_codigo(codigo, bodega):
+        return False
+    prendas[codigo] = [nombre, categoria, talla, color, material, es_unisex]
+    bodega [codigo] = [int(precio), int(unidades)]
+    return True
+
+
+def eliminar_prenda(codigo, prendas, bodega):
+    if buscar_codigo(codigo, bodega):
+        prendas.pop(codigo.upper())
+        bodega.pop(codigo.upper())
+        return True
+    return False
+
 
 
 while True:
@@ -72,11 +146,85 @@ while True:
         unidades_categoria(categoria, prendas, bodega)
 
     elif opcion == 2:
-        p_min = (input("Ingrese precio minimo"))
-        p_max = (input("Ingrese precio maximo"))
-        if p_min >= 0 or p_min < p_max:
-            busqueda_precio(p_min, p_max, prendas, bodega)
-        else: 
-            print("ingrese un numero mayor que 0 o menor al maximo")
+        while True:
+                try:
+                    p_min = int(input("Ingrese precio minimo: "))
+                    p_max = int(input("Ingrese precio maximo: "))
+                    if p_min >= 0 and p_min <= p_max: 
+                        busqueda_precio(p_min, p_max, prendas, bodega)
+                        break
+                    else: 
+                        print ("Ingrese un numero mayor que 0 y menos que el minimo")
 
+                except ValueError:
+                    print("Debe ingresar numeros enteros")
+                    continue
+
+            
+
+
+
+    elif opcion == 3: 
+        while True:
+            codigo = input("Ingrese el codigo de la prenda: ")
+            try:
+                nuevo_precio = int(input("Ingrese el nuevo precio de la prenda: "))
+            except ValueError: 
+                print("Ingrese un numero entero")
+                continue
+            if actualizar_precio(codigo, nuevo_precio, bodega):
+                print("Nuevo precio actualizado")
+            else:
+                print("El codigo no existe")
+            
+            respuesta = input("Desea actualizar otro precio (s/n): ")
+            if respuesta.lower() == "n":
+                break
+
+    elif opcion == 4:
+        codigo = input("Ingrese el codigo de la prenda: ")
+        nombre = input("Ingrese el nombre: ")
+        categoria = input("Ingrese la categoria: ")
+        talla = input("Ingrese la talla: ")
+        color = input("Ingrese el color: ")
+        material =input("Ingrese el material: ") 
+        es_unisex = input("Es unisex? (s/n): ")
+        precio = input("Ingrese su precio: ") 
+        unidades = input("Ingrese las unidades: ")
+
+        if not valida_codigo(codigo, bodega):
+            print("Codigo invalido o El código ya existe ")
+        elif not valida_nombre(nombre):
+            print("Nombre invalido")
+        elif not valida_categoria(categoria):
+            print("Categoria invalido")
+        elif not valida_talla(talla):
+            print("Talla invalida")
+        elif not valida_color(color):
+            print ("Color invalido")
+        elif not valida_material(material):
+            print("Material invalido")
+        elif not valida_es_unisex(es_unisex):
+            print("Debe ingresar s o n")
+        elif not valida_precio(precio):
+            print("Precio Invalido")
+        elif not valida_unidades(unidades):
+            print("Unidades invalidas")
+        else: 
+            es_unisex_bool = valida_es_unisex(es_unisex)
+            if agregar_prenda(codigo, nombre, categoria, talla, color, material, es_unisex, precio, unidades, bodega):
+                print("Prenda agregada")
+            else:
+                print("El código ya existe")
+
+    elif opcion == 5:
+        codigo = input("Ingrese el codigo de la prenda: ")
+        if eliminar_prenda(codigo, prendas, bodega):
+            print("Prenda eliminada")
+        else: 
+            print("El codigo no existe")
+    
+    elif opcion == 6:
+        print("Programa finalizado")
+        break
 
