@@ -52,3 +52,23 @@ def unidades_categoria(categoria, prendas, bodega):
 
     print(f"El total de {categoria} es de: {total}")
     
+def busqueda_precio(p_min, p_max, prendas, bodega):
+    resultado = []
+    for codigo, datos in bodega.items():
+        if datos[0] >= p_min and datos[0] <= p_max and datos[1] != 0:
+            resultado.append(f"{prendas[codigo][0]}--{codigo}")
+    resultado.sorf
+    if len(resultado) == 0:
+        print("No existen prendas con ese rango de precio")
+    else: 
+        print(f"Los resultados son: {resultado}")
+
+
+while True:
+    opcion = leer_opcion()
+
+    if opcion == 1:
+        categoria = input("Ingrese el nombre de la categoria (polera, pantalon, chaqueta, vestido, poleron, camisa): ")
+        unidades_categoria(categoria, prendas, bodega)
+
+
